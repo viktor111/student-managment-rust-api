@@ -10,6 +10,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(students::get)
             .service(students::create)
+            .service(students::all)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

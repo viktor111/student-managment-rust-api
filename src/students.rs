@@ -41,6 +41,18 @@ impl StudentRequest{
 	}
 }
 
+#[get("/students")]
+pub async fn all() -> HttpResponse {
+	let mut students: Vec<Student> = Vec::new();
+	students.push(Student::new("pesho".to_string()));
+	students.push(Student::new("gosho".to_string()));
+
+	return HttpResponse::Ok()
+		.content_type(APPLICATION_JSON)
+		.json(students);
+
+}
+
 #[post("/student")]
 pub async fn create(student_request: Json<StudentRequest>) -> HttpResponse{
 	return HttpResponse::Created()
