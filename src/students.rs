@@ -8,8 +8,6 @@ use serde::{Deserialize, Serialize};
 use crate::response::Response;
 use crate::constants::APPLICATION_JSON;
 
-pub type Students = Response<Student>;
-
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Student {
 	pub id: String,
@@ -34,10 +32,10 @@ pub struct StudentRequest{
 
 impl StudentRequest{
 	pub fn to_student(&self) -> Option<Student>{
-		match &self.name{
-			Some(name) => Some(Student::new(name.to_string())),
-			None => None
-		}
+
+		let name_param = self.name.as_ref().unwrap().to_string();
+
+		return Some(Student::new(name_param.to_string()))
 	}
 }
 
@@ -45,12 +43,11 @@ impl StudentRequest{
 pub async fn all() -> HttpResponse {
 	let mut students: Vec<Student> = Vec::new();
 	students.push(Student::new("pesho".to_string()));
-	students.push(Student::new("gosho".to_string()));
+	students.push(Student::new("gosho".to_string()));	
 
 	return HttpResponse::Ok()
 		.content_type(APPLICATION_JSON)
 		.json(students);
-
 }
 
 #[post("/student")]
